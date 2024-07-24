@@ -26,4 +26,17 @@ public class MakeMyComputerController {
         }
         return ResponseEntity.status(HttpStatus.CREATED).body(myComputerDto);
     }
+
+    @GetMapping
+    @ResponseBody
+    private ResponseEntity<?> findMyComputer(@RequestParam("userId") String userId){
+        List<MyComputerDto> myComputerList = null;
+        try {
+            myComputerList = myComputerService.getMyComputerList(userId);
+        } catch(RuntimeException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+
+        return ResponseEntity.ok(myComputerService.getMyComputerList(userId));
+    }
 }

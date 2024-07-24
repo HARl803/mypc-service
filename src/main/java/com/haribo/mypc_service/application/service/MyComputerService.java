@@ -8,4 +8,5 @@ public interface MyComputerService {
 
     MyComputerDto addMyComputer(MyComputerDto myComputerDto);
     int countMyComputer(String userId);
+    List<MyComputerDto> getMyComputerList(String userId);
 }

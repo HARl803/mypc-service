@@ -37,4 +37,18 @@ public class MyComputerServiceImpl implements MyComputerService {
 
         return mongoTemplate.save(myComputerDto);
     }
+
+    @Override
+    public List<MyComputerDto> getMyComputerList(String userId){
+        Aggregation aggregation = Aggregation.newAggregation(
+                Aggregation.match(Criteria.where("userId").is(userId)
+                        .and("myComputer.isDelete").is(false))
+        );
+
+        AggregationResults<MyComputerDto> results = mongoTemplate.aggregate(aggregation, "mycomputer", MyComputerDto.class);
+
+        if(results.getMappedResults().size() > 0){
+            return results.getMappedResults();
+        } else throw new RuntimeException("유저의 커스텀 PC 목록이 텅~ 비어있네요!");
+    }
 }
