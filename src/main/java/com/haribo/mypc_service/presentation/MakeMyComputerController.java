@@ -39,4 +39,17 @@ public class MakeMyComputerController {
 
         return ResponseEntity.ok(myComputerService.getMyComputerList(userId));
     }
+
+    @DeleteMapping
+    private ResponseEntity<?> deleteMyComputer(@RequestBody MyComputerDto myComputerDto) {
+        try{
+            String userId = myComputerDto.getUserId();
+            String computerName = myComputerDto.getComputerName();
+            myComputerService.deleteMyComputerDto(userId, computerName);
+        } catch(RuntimeException e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body("삭제 완료!");
+    }
 }
