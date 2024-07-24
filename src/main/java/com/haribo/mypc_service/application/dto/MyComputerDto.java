@@ -22,6 +22,7 @@ public class MyComputerDto {
     @NoArgsConstructor
     @AllArgsConstructor
     @Getter
+    @Setter
     public static class MyComputer {
         private String computerName;
         private String cpuId;
@@ -33,5 +34,6 @@ public class MyComputerDto {
         private String pcCaseId;
         private String poserSupplyId;
         private String memoryId;
+        private Boolean isDelete;
     }
 }
