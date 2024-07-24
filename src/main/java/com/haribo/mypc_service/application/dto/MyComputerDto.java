@@ -17,6 +17,8 @@ public class MyComputerDto {
     @Id
     private String id;
     private String userId;
+    private String computerName;
+    private Boolean isDelete;
     private MyComputer myComputer;
 
     @NoArgsConstructor
@@ -24,7 +26,6 @@ public class MyComputerDto {
     @Getter
     @Setter
     public static class MyComputer {
-        private String computerName;
         private String cpuId;
         private String coolerId;
         private String motherboardId;
@@ -34,6 +35,5 @@ public class MyComputerDto {
         private String pcCaseId;
         private String poserSupplyId;
         private String memoryId;
-        private Boolean isDelete;
     }
 }

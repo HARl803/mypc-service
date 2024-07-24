@@ -51,4 +51,5 @@ public class MyComputerServiceImpl implements MyComputerService {
             return results.getMappedResults();
         } else throw new RuntimeException("유저의 커스텀 PC 목록이 텅~ 비어있네요!");
     }
+
 }
