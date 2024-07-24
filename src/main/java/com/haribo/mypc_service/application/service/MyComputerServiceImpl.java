@@ -22,7 +22,7 @@ public class MyComputerServiceImpl implements MyComputerService {
     public int countMyComputer(String userId) {
         Query query = new Query();
         query.addCriteria(Criteria.where("userId").is(userId)
-                .and("myComputer.isDelete").is(false));
+                .and("isDelete").is(false));
 
         return (int) mongoTemplate.count(query, MyComputerDto.class);
     }
@@ -30,7 +30,7 @@ public class MyComputerServiceImpl implements MyComputerService {
     @Override
     public MyComputerDto addMyComputer(MyComputerDto myComputerDto){
         String userId = myComputerDto.getUserId();
-        myComputerDto.getMyComputer().setIsDelete(false);
+        myComputerDto.setIsDelete(false);
 
         if(countMyComputer(userId)>=5)
             throw new RuntimeException("생성한 커스텀 PC 갯수가 꽉찼답니다.");
@@ -42,7 +42,7 @@ public class MyComputerServiceImpl implements MyComputerService {
     public List<MyComputerDto> getMyComputerList(String userId){
         Aggregation aggregation = Aggregation.newAggregation(
                 Aggregation.match(Criteria.where("userId").is(userId)
-                        .and("myComputer.isDelete").is(false))
+                        .and("isDelete").is(false))
         );
 
         AggregationResults<MyComputerDto> results = mongoTemplate.aggregate(aggregation, "mycomputer", MyComputerDto.class);
