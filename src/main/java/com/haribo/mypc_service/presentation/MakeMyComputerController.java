@@ -40,16 +40,25 @@ public class MakeMyComputerController {
         return ResponseEntity.ok(myComputerService.getMyComputerList(userId));
     }
 
-    @DeleteMapping
-    private ResponseEntity<?> deleteMyComputer(@RequestBody MyComputerDto myComputerDto) {
+    @DeleteMapping("/{id}")
+    private ResponseEntity<?> deleteMyComputer(@PathVariable String id) {
         try{
-            String userId = myComputerDto.getUserId();
-            String computerName = myComputerDto.getComputerName();
-            myComputerService.deleteMyComputerDto(userId, computerName);
+            myComputerService.deleteMyComputerDto(id);
         } catch(RuntimeException e){
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
 
         return ResponseEntity.status(HttpStatus.OK).body("삭제 완료!");
+    }
+
+    @PatchMapping("/{id}")
+    private ResponseEntity<?> updateMyComputer(@PathVariable String id, @RequestBody MyComputerDto myComputerDto) {
+        try{
+            myComputerService.updateMyComputerDto(id, myComputerDto);
+        } catch(RuntimeException e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body("업데이트 완료!");
     }
 }

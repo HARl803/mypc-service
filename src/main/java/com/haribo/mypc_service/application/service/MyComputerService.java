@@ -9,6 +9,7 @@ public interface MyComputerService {
     MyComputerDto addMyComputer(MyComputerDto myComputerDto);
     int countMyComputer(String userId);
     List<MyComputerDto> getMyComputerList(String userId);
-    void deleteMyComputerDto(String userId, String computerName);
-
+    void deleteMyComputerDto(String id);
+    MyComputerDto getMyComputerDto(String id);
+    MyComputerDto updateMyComputerDto(String id, MyComputerDto myNewComputerDto);
 }
