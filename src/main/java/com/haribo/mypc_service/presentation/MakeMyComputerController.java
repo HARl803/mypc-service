@@ -1,7 +1,7 @@
 package com.haribo.mypc_service.presentation;
 
 import com.haribo.mypc_service.application.dto.MyComputerDto;
-import com.haribo.mypc_service.application.service.MyComputerService;
+import com.haribo.mypc_service.application.service.mycomputer.MyComputerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

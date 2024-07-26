@@ -1,4 +1,4 @@
-package com.haribo.mypc_service.application.service;
+package com.haribo.mypc_service.application.service.mycomputer;
 
 import com.haribo.mypc_service.application.dto.MyComputerDto;
 

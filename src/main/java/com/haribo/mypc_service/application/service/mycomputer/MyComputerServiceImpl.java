@@ -1,4 +1,4 @@
-package com.haribo.mypc_service.application.service;
+package com.haribo.mypc_service.application.service.mycomputer;
 
 import com.haribo.mypc_service.application.dto.MyComputerDto;
 import lombok.RequiredArgsConstructor;
@@ -8,11 +8,7 @@ import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
