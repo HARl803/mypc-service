@@ -11,7 +11,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-@Setter
 public class GpuDto {
     @Id
     private String id;

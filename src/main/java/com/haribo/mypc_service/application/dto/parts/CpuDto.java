@@ -9,10 +9,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "parts")
 @Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class CpuDto{
+public class CpuDto {
     @Id
     private String id;
     private Cpu cpu;

@@ -9,7 +9,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "parts")
 @Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class HddDto {

@@ -9,10 +9,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "parts")
 @Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class CoolerDto{
+public class CoolerDto {
     @Id
     private String id;
     private Cooler cooler;
