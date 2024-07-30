@@ -10,7 +10,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document(collection = "mycomputer")
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
 public class MyComputerDto {
 
