@@ -37,7 +37,7 @@ public class MakeMyComputerController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
 
-        return ResponseEntity.ok(myComputerService.getMyComputerList(userId));
+        return ResponseEntity.status(HttpStatus.OK).body(myComputerList);
     }
 
     @DeleteMapping("/{id}")
