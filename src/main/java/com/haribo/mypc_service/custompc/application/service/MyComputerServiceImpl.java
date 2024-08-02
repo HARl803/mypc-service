@@ -77,7 +77,7 @@ public class MyComputerServiceImpl implements MyComputerService {
                             .power(myComputer.getPower())
                             .gpu(myComputer.getGpu())
                             .coolerTuning(myComputer.getCoolerTuning())
-                            ._case(myComputer.get_case())
+                            .pcCase(myComputer.getPcCase())
                             .isDelete(myComputer.getIsDeleted())
                             .build();
 
@@ -111,7 +111,7 @@ public class MyComputerServiceImpl implements MyComputerService {
                             .power(myComputer.getPower())
                             .gpu(myComputer.getGpu())
                             .coolerTuning(myComputer.getCoolerTuning())
-                            ._case(myComputer.get_case())
+                            .pcCase(myComputer.getPcCase())
                             .isDelete(myComputer.getIsDeleted())
                             .build();
                 }
@@ -140,7 +140,7 @@ public class MyComputerServiceImpl implements MyComputerService {
                 .power(myComputerRequest.getPower())
                 .gpu(myComputerRequest.getGpu())
                 .coolerTuning(myComputerRequest.getCoolerTuning())
-                ._case(myComputerRequest.get_case())
+                .pcCase(myComputerRequest.getPcCase())
                 .isDeleted(false)
                 .build();
 
@@ -181,7 +181,7 @@ public class MyComputerServiceImpl implements MyComputerService {
                 .power(myComputerRequest.getPower())
                 .gpu(myComputerRequest.getGpu())
                 .coolerTuning(myComputerRequest.getCoolerTuning())
-                ._case(myComputerRequest.get_case())
+                .pcCase(myComputerRequest.getPcCase())
                 .build();
 
         Update update = new Update();
