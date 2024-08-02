@@ -30,7 +30,7 @@ public class MyComputerDto {
         private Parts ssd;
         private Parts hdd;
         @Field("case")
-        private Parts _case;
+        private Parts pcCase;
         private Parts power;
 
         @Getter
