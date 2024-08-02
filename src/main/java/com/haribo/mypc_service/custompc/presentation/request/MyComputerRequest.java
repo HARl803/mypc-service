@@ -2,12 +2,10 @@ package com.haribo.mypc_service.custompc.presentation.request;
 
 import com.haribo.mypc_service.custompc.application.dto.MyComputerDto.MyComputer.Parts;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 @Getter
-@Builder
 @AllArgsConstructor
 public class MyComputerRequest {
     private String computerName;
@@ -22,6 +20,6 @@ public class MyComputerRequest {
     private Parts ssd;
     private Parts hdd;
     @Field("case")
-    private Parts _case;
+    private Parts pcCase;
     private Parts power;
 }
