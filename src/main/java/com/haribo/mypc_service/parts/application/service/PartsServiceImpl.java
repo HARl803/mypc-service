@@ -1,6 +1,6 @@
-package com.haribo.mypc_service.application.service.parts;
+package com.haribo.mypc_service.parts.application.service;
 
-import com.haribo.mypc_service.presentation.response.parts.*;
+import com.haribo.mypc_service.parts.presentation.response.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;

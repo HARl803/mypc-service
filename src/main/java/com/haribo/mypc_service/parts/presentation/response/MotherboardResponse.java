@@ -1,4 +1,4 @@
-package com.haribo.mypc_service.presentation.response.parts;
+package com.haribo.mypc_service.parts.presentation.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
