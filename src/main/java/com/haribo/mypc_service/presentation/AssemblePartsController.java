@@ -18,6 +18,7 @@ public class AssemblePartsController {
     @GetMapping
     @ResponseBody
     private ResponseEntity<?> findParts(@RequestParam("partsName") String partsName){
+
         List<Object> partsDtos = partsService.getAllParts(partsName);
 
         return ResponseEntity.status(HttpStatus.OK).body(partsDtos);
