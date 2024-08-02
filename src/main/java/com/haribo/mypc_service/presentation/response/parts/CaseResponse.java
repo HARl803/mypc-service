@@ -10,7 +10,7 @@ import java.util.Map;
 @Document(collection = "parts")
 @Getter
 public class CaseResponse {
-    private Map<String, Case> _case;
+    private Map<String, Case> pcCase;
 
     @Getter
     public static class Case{
