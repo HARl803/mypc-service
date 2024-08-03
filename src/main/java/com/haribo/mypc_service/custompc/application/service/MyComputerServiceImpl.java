@@ -146,9 +146,6 @@ public class MyComputerServiceImpl implements MyComputerService {
 
         Query query = new Query();
         query.addCriteria(Criteria.where("userId").is(userId));
-        if(mongoTemplate.findOne(query, MyComputerDto.class)==null){
-            throw new CustomException(CustomErrorCode.USER_NOT_FOUND);
-        }
 
         Update update = new Update();
         update.push("myComputers", myComputer);
@@ -156,7 +153,6 @@ public class MyComputerServiceImpl implements MyComputerService {
         if(mongoTemplate.findOne(new Query().addCriteria(Criteria.where("userId").is(userId)), MyComputerDto.class)!=null){
             mongoTemplate.updateFirst(query, update, "mycomputer");
         } else {
-            System.out.println("hi");
             logger.debug("새로운 도큐먼트 생성 -> ID: {}", userId);
             List<MyComputer> myComputerList = new ArrayList<>();
             myComputerList.add(myComputer);
