@@ -216,8 +216,16 @@ public class MyComputerServiceImpl implements MyComputerService {
         logger.debug("computerDto의 이름 : {}", myComputerDto.getComputerName());
 
         Query query = new Query();
+
         query.addCriteria(Criteria.where("userId").is(userId));
+        if(mongoTemplate.findOne(query, MyComputerDto.class)==null){
+            throw new CustomException(CustomErrorCode.USER_NOT_FOUND);
+        }
+
         query.addCriteria(Criteria.where("myComputers._id").is(computerId));
+        if(mongoTemplate.findOne(query, MyComputerDto.class)==null){
+            throw new CustomException(CustomErrorCode.CUSTOM_PC_NOT_FOUND);
+        }
 
         Update update = new Update();
         update.set("myComputers.$[myComputer].isDeleted", true);
