@@ -150,10 +150,18 @@ public class MyComputerServiceImpl implements MyComputerService {
         Update update = new Update();
         update.push("myComputers", myComputer);
 
-        try {
+        if(mongoTemplate.findOne(new Query().addCriteria(Criteria.where("userId").is(userId)), MyComputerDto.class)!=null){
             mongoTemplate.updateFirst(query, update, "mycomputer");
-        } catch (RuntimeException e) {
-            throw new CustomException(CustomErrorCode.USER_NOT_FOUND);
+        } else {
+            System.out.println("hi");
+            logger.debug("새로운 도큐먼트 생성 -> ID: {}", userId);
+            List<MyComputer> myComputerList = new ArrayList<>();
+            myComputerList.add(myComputer);
+            MyComputerDto myComputerDto = MyComputerDto.builder()
+                    .userId(userId)
+                    .myComputers(myComputerList)
+                    .build();
+            mongoTemplate.save(myComputerDto, "mycomputer");
         }
     }
 
