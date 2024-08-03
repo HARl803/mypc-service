@@ -146,6 +146,9 @@ public class MyComputerServiceImpl implements MyComputerService {
 
         Query query = new Query();
         query.addCriteria(Criteria.where("userId").is(userId));
+        if(mongoTemplate.findOne(query, MyComputerDto.class)==null){
+            throw new CustomException(CustomErrorCode.USER_NOT_FOUND);
+        }
 
         Update update = new Update();
         update.push("myComputers", myComputer);
