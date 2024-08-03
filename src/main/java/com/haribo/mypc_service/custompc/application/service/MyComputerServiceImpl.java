@@ -171,9 +171,9 @@ public class MyComputerServiceImpl implements MyComputerService {
     @Override
     public void updateMyComputerDto(String userId, MyComputerRequest myComputerRequest) {
 
-        logger.debug("request 컴퓨터 이름: {}", myComputerRequest.getId());
-
         String computerId = myComputerRequest.getId();
+
+        logger.debug("request 컴퓨터 아이디: {}", computerId);
 
         // 여기서 내가 원하는 computer를 찾았어
         Query query = new Query();
@@ -183,6 +183,9 @@ public class MyComputerServiceImpl implements MyComputerService {
         }
 
         query.addCriteria(Criteria.where("myComputers._id").is(computerId));
+        if(mongoTemplate.findOne(query, MyComputerDto.class)==null){
+            throw new CustomException(CustomErrorCode.CUSTOM_PC_NOT_FOUND);
+        }
 
         MyComputer myComputer = MyComputer.builder()
                 .id(myComputerRequest.getId())
