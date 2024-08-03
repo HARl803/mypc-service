@@ -231,14 +231,8 @@ public class MyComputerServiceImpl implements MyComputerService {
         }
 
         Update update = new Update();
-        update.set("myComputers.$[myComputer].isDeleted", true);
+        update.set("myComputers.$.isDeleted", true);
 
-        UpdateOptions options = new UpdateOptions()
-                .arrayFilters(Arrays.asList(
-                        Filters.eq("myComputer._id", computerId)
-                ));
-
-        mongoTemplate.getCollection("mycomputer")
-                .updateOne(query.getQueryObject(), update.getUpdateObject(), options);
+        mongoTemplate.updateFirst(query, update, MyComputerDto.class);
     }
 }
