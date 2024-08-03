@@ -223,6 +223,13 @@ public class MyComputerServiceImpl implements MyComputerService {
             throw new CustomException(CustomErrorCode.CUSTOM_PC_NOT_FOUND);
         }
 
+        if(mongoTemplate.findOne(new Query()
+                .addCriteria(Criteria.where("userId").is(userId)
+                .and("myComputers._id").is(computerId)
+                .and("isDeleted").is(true)), MyComputerDto.class)!=null){
+            throw new CustomException(CustomErrorCode.CUSTOM_PC_NOT_FOUND);
+        }
+
         Update update = new Update();
         update.set("myComputers.$[myComputer].isDeleted", true);
 
