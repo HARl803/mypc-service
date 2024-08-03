@@ -175,6 +175,10 @@ public class MyComputerServiceImpl implements MyComputerService {
         // 여기서 내가 원하는 computer를 찾았어
         Query query = new Query();
         query.addCriteria(Criteria.where("userId").is(userId));
+        if(mongoTemplate.findOne(query, MyComputerDto.class)==null){
+            throw new CustomException(CustomErrorCode.USER_NOT_FOUND);
+        }
+
         query.addCriteria(Criteria.where("myComputers._id").is(computerId));
 
         MyComputer myComputer = MyComputer.builder()
