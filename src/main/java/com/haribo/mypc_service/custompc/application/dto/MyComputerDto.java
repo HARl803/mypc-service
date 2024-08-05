@@ -22,21 +22,15 @@ public class MyComputerDto {
         private String computerName;
         private Boolean isDeleted;
 
-        private Parts cpu;
-        private Parts coolerTuning;
-        private Parts motherboard;
-        private Parts memory;
-        private Parts gpu;
-        private Parts ssd;
-        private Parts hdd;
+        private String cpu;
+        private String coolerTuning;
+        private String motherboard;
+        private String memory;
+        private String gpu;
+        private String ssd;
+        private String hdd;
         @Field("case")
-        private Parts pcCase;
-        private Parts power;
-
-        @Getter
-        public static class Parts {
-            private String partsName;
-            private String id;
-        }
+        private String pcCase;
+        private String power;
     }
 }
