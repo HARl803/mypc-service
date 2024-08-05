@@ -78,7 +78,6 @@ public class MyComputerServiceImpl implements MyComputerService {
                             .gpu(myComputer.getGpu())
                             .coolerTuning(myComputer.getCoolerTuning())
                             .pcCase(myComputer.getPcCase())
-                            .isDelete(myComputer.getIsDeleted())
                             .build();
 
                     myComputerResponses.add(myComputerResponse);
@@ -112,7 +111,6 @@ public class MyComputerServiceImpl implements MyComputerService {
                             .gpu(myComputer.getGpu())
                             .coolerTuning(myComputer.getCoolerTuning())
                             .pcCase(myComputer.getPcCase())
-                            .isDelete(myComputer.getIsDeleted())
                             .build();
                 }
             }
@@ -185,7 +183,6 @@ public class MyComputerServiceImpl implements MyComputerService {
 
         MyComputer myComputer = MyComputer.builder()
                 .id(myComputerRequest.getId())
-                .isDeleted(myComputerRequest.getIsDeleted())
                 .computerName(myComputerRequest.getComputerName())
                 .cpu(myComputerRequest.getCpu())
                 .memory(myComputerRequest.getMemory())

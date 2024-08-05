@@ -10,7 +10,6 @@ import org.springframework.data.mongodb.core.mapping.Field;
 public class MyComputerRequest {
     private String computerName;
     private String id;
-    private Boolean isDeleted;
 
     private Parts cpu;
     private Parts coolerTuning;
