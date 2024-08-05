@@ -9,8 +9,12 @@ import java.util.Map;
 
 @Document(collection = "parts")
 @Getter
-public class GpuResponse {
+public class GpuResponse extends PartsResponse{
     private Map<String, Gpu> gpu;
+
+    public GpuResponse(Map<String, Gpu> gpu) {
+        this.gpu = gpu;
+    }
 
     @Getter
     public static class Gpu{

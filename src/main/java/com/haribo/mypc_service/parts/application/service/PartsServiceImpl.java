@@ -16,7 +16,7 @@ public class PartsServiceImpl implements PartsService {
     private final MongoTemplate mongoTemplate;
 
     @Override
-    public <T> List<T> getAllParts(String partsName) {
+    public <T extends PartsResponse> List<T> getAllParts(String partsName) {
         Query query = new Query();
         query.addCriteria(Criteria.where(partsName).exists(true));
 

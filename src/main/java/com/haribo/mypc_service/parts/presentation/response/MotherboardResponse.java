@@ -9,8 +9,12 @@ import java.util.Map;
 
 @Document(collection = "parts")
 @Getter
-public class MotherboardResponse {
+public class MotherboardResponse extends PartsResponse{
     private Map<String, Motherboard> motherboard;
+
+    public MotherboardResponse(Map<String, Motherboard> motherboard) {
+        this.motherboard = motherboard;
+    }
 
     @Getter
     public static class Motherboard{

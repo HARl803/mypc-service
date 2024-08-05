@@ -9,8 +9,12 @@ import java.util.Map;
 
 @Document(collection = "parts")
 @Getter
-public class CpuResponse {
+public class CpuResponse extends PartsResponse{
     private Map<String, Cpu> cpu;
+
+    public CpuResponse(Map<String, Cpu> cpu) {
+        this.cpu = cpu;
+    }
 
     @Getter
     public static class Cpu{

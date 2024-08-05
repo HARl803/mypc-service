@@ -9,8 +9,12 @@ import java.util.Map;
 
 @Document(collection = "parts")
 @Getter
-public class PowerResponse {
+public class PowerResponse extends PartsResponse{
     private Map<String, Power> power;
+
+    public PowerResponse(Map<String, Power> power) {
+        this.power = power;
+    }
 
     @Getter
     public static class Power{

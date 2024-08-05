@@ -9,8 +9,12 @@ import java.util.Map;
 
 @Document(collection = "parts")
 @Getter
-public class HddResponse {
+public class HddResponse extends PartsResponse{
     private Map<String, Hdd> hdd;
+
+    public HddResponse(Map<String, Hdd> hdd) {
+        this.hdd = hdd;
+    }
 
     @Getter
     public static class Hdd{

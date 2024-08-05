@@ -9,8 +9,12 @@ import java.util.Map;
 
 @Document(collection = "parts")
 @Getter
-public class CoolerResponse {
+public class CoolerResponse extends PartsResponse{
     private Map<String, Cooler> coolerTuning;
+
+    public CoolerResponse(Map<String, Cooler> coolerTuning) {
+        this.coolerTuning = coolerTuning;
+    }
 
     @Getter
     public static class Cooler{

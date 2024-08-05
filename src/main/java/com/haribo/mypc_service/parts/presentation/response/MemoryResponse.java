@@ -9,8 +9,12 @@ import java.util.Map;
 
 @Document(collection = "parts")
 @Getter
-public class MemoryResponse {
+public class MemoryResponse extends PartsResponse{
     private Map<String, Memory> memory;
+
+    public MemoryResponse(Map<String, Memory> memory) {
+        this.memory = memory;
+    }
 
     @Getter
     public static class Memory{

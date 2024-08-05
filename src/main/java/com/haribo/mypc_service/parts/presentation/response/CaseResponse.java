@@ -9,8 +9,12 @@ import java.util.Map;
 
 @Document(collection = "parts")
 @Getter
-public class CaseResponse {
+public class CaseResponse extends PartsResponse{
     private Map<String, Case> pcCase;
+
+    public CaseResponse(Map<String, Case> pcCase) {
+        this.pcCase = pcCase;
+    }
 
     @Getter
     public static class Case{
