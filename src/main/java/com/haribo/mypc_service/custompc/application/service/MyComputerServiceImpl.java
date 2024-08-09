@@ -6,9 +6,6 @@ import com.haribo.mypc_service.custompc.application.dto.MyComputerDto;
 import com.haribo.mypc_service.custompc.application.dto.MyComputerDto.MyComputer;
 import com.haribo.mypc_service.custompc.presentation.request.MyComputerRequest;
 import com.haribo.mypc_service.custompc.presentation.response.MyComputerResponse;
-import com.mongodb.client.MongoClient;
-import com.mongodb.client.model.Filters;
-import com.mongodb.client.model.UpdateOptions;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -30,9 +27,9 @@ public class MyComputerServiceImpl implements MyComputerService {
     private final Logger logger = LoggerFactory.getLogger(MyComputerServiceImpl.class);
 
     @Override
-    public int countMyComputer(String userId) {
+    public int countMyComputer(String profileId) {
         Query query = new Query();
-        query.addCriteria(Criteria.where("userId").is(userId));
+        query.addCriteria(Criteria.where("profileId").is(profileId));
 
         List<MyComputerDto> documents = mongoTemplate.find(query, MyComputerDto.class, "mycomputer");
 
@@ -50,12 +47,12 @@ public class MyComputerServiceImpl implements MyComputerService {
     }
 
     @Override
-    public List<MyComputerResponse> getMyComputerList(String userId) {
+    public List<MyComputerResponse> getMyComputerList(String profileId) {
 
         List<MyComputerResponse> myComputerResponses = new ArrayList<>();
 
         Query query = new Query();
-        query.addCriteria(Criteria.where("userId").is(userId));
+        query.addCriteria(Criteria.where("profileId").is(profileId));
 
         List<MyComputerDto> documents = mongoTemplate.find(query, MyComputerDto.class, "mycomputer");
 
@@ -88,10 +85,10 @@ public class MyComputerServiceImpl implements MyComputerService {
     }
 
     @Override
-    public MyComputerResponse getMyComputerDto(String userId, String computerId) {
+    public MyComputerResponse getMyComputerDto(String profileId, String computerId) {
 
         Query query = new Query();
-        query.addCriteria(Criteria.where("userId").is(userId));
+        query.addCriteria(Criteria.where("profileId").is(profileId));
 
         List<MyComputerDto> documents = mongoTemplate.find(query, MyComputerDto.class, "mycomputer");
 
@@ -120,11 +117,11 @@ public class MyComputerServiceImpl implements MyComputerService {
     }
 
     @Override
-    public void addMyComputer(MyComputerRequest myComputerRequest, String userId){
+    public void addMyComputer(MyComputerRequest myComputerRequest, String profileId){
 
-        logger.debug("개수: {}", countMyComputer(userId));
+        logger.debug("개수: {}", countMyComputer(profileId));
 
-        if(countMyComputer(userId)>=5)
+        if(countMyComputer(profileId)>=5)
             throw new CustomException(CustomErrorCode.SIZE_FULL_ERROR);
 
         MyComputer myComputer = MyComputer.builder()
@@ -143,19 +140,19 @@ public class MyComputerServiceImpl implements MyComputerService {
                 .build();
 
         Query query = new Query();
-        query.addCriteria(Criteria.where("userId").is(userId));
+        query.addCriteria(Criteria.where("profileId").is(profileId));
 
         Update update = new Update();
         update.push("myComputers", myComputer);
 
-        if(mongoTemplate.findOne(new Query().addCriteria(Criteria.where("userId").is(userId)), MyComputerDto.class)!=null){
+        if(mongoTemplate.findOne(new Query().addCriteria(Criteria.where("profileId").is(profileId)), MyComputerDto.class)!=null){
             mongoTemplate.updateFirst(query, update, "mycomputer");
         } else {
-            logger.debug("새로운 도큐먼트 생성 -> ID: {}", userId);
+            logger.debug("새로운 도큐먼트 생성 -> ID: {}", profileId);
             List<MyComputer> myComputerList = new ArrayList<>();
             myComputerList.add(myComputer);
             MyComputerDto myComputerDto = MyComputerDto.builder()
-                    .userId(userId)
+                    .userId(profileId)
                     .myComputers(myComputerList)
                     .build();
             mongoTemplate.save(myComputerDto, "mycomputer");
@@ -163,7 +160,7 @@ public class MyComputerServiceImpl implements MyComputerService {
     }
 
     @Override
-    public void updateMyComputerDto(String userId, MyComputerRequest myComputerRequest) {
+    public void updateMyComputerDto(String profileId, MyComputerRequest myComputerRequest) {
 
         String computerId = myComputerRequest.getId();
 
@@ -171,7 +168,7 @@ public class MyComputerServiceImpl implements MyComputerService {
 
         // 여기서 내가 원하는 computer를 찾았어
         Query query = new Query();
-        query.addCriteria(Criteria.where("userId").is(userId));
+        query.addCriteria(Criteria.where("profileId").is(profileId));
         if(mongoTemplate.findOne(query, MyComputerDto.class)==null){
             throw new CustomException(CustomErrorCode.USER_NOT_FOUND);
         }
@@ -203,14 +200,14 @@ public class MyComputerServiceImpl implements MyComputerService {
 
 
     @Override
-    public void deleteMyComputerDto(String userId, String computerId){
-        MyComputerResponse myComputerDto = getMyComputerDto(userId, computerId);
+    public void deleteMyComputerDto(String profileId, String computerId){
+        MyComputerResponse myComputerDto = getMyComputerDto(profileId, computerId);
 
         logger.debug("computerDto의 이름 : {}", myComputerDto.getComputerName());
 
         Query query = new Query();
 
-        query.addCriteria(Criteria.where("userId").is(userId));
+        query.addCriteria(Criteria.where("profileId").is(profileId));
         if(mongoTemplate.findOne(query, MyComputerDto.class)==null){
             throw new CustomException(CustomErrorCode.USER_NOT_FOUND);
         }
@@ -221,7 +218,7 @@ public class MyComputerServiceImpl implements MyComputerService {
         }
 
         if(mongoTemplate.findOne(new Query()
-                .addCriteria(Criteria.where("userId").is(userId)
+                .addCriteria(Criteria.where("profileId").is(profileId)
                 .and("myComputers._id").is(computerId)
                 .and("isDeleted").is(true)), MyComputerDto.class)!=null){
             throw new CustomException(CustomErrorCode.CUSTOM_PC_NOT_FOUND);
