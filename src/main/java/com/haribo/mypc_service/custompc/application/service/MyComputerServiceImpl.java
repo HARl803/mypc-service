@@ -1,0 +1,232 @@
+package com.haribo.mypc_service.custompc.application.service;
+
+import com.haribo.mypc_service.common.exception.CustomErrorCode;
+import com.haribo.mypc_service.common.exception.CustomException;
+import com.haribo.mypc_service.custompc.application.dto.MyComputerDto;
+import com.haribo.mypc_service.custompc.application.dto.MyComputerDto.MyComputer;
+import com.haribo.mypc_service.custompc.presentation.request.MyComputerRequest;
+import com.haribo.mypc_service.custompc.presentation.response.MyComputerResponse;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
+import org.springframework.stereotype.Service;
+
+import java.util.*;
+
+@RequiredArgsConstructor
+@Service
+@Slf4j
+public class MyComputerServiceImpl implements MyComputerService {
+
+    private final MongoTemplate mongoTemplate;
+    private final Logger logger = LoggerFactory.getLogger(MyComputerServiceImpl.class);
+
+    @Override
+    public int countMyComputer(String profileId) {
+        Query query = new Query();
+        query.addCriteria(Criteria.where("profileId").is(profileId));
+
+        List<MyComputerDto> documents = mongoTemplate.find(query, MyComputerDto.class, "mycomputer");
+
+        int myComputerCnt = 0;
+
+        for (MyComputerDto dto : documents) {
+            List<MyComputer> myComputers = dto.getMyComputers();
+
+            for (MyComputer myComputer : myComputers) {
+                if (!myComputer.getIsDeleted()) myComputerCnt++;
+            }
+        }
+
+        return myComputerCnt;
+    }
+
+    @Override
+    public List<MyComputerResponse> getMyComputerList(String profileId) {
+
+        List<MyComputerResponse> myComputerResponses = new ArrayList<>();
+
+        Query query = new Query();
+        query.addCriteria(Criteria.where("profileId").is(profileId));
+
+        List<MyComputerDto> documents = mongoTemplate.find(query, MyComputerDto.class, "mycomputer");
+
+        if(documents.isEmpty()) throw new CustomException(CustomErrorCode.USER_NOT_FOUND);
+
+        for (MyComputerDto dto : documents) {
+            List<MyComputer> myComputers = dto.getMyComputers();
+
+            for (MyComputer myComputer : myComputers) {
+                if (!myComputer.getIsDeleted()) {
+                    MyComputerResponse myComputerResponse = MyComputerResponse.builder()
+                            .id(myComputer.getId())
+                            .computerName(myComputer.getComputerName())
+                            .cpu(myComputer.getCpu())
+                            .memory(myComputer.getMemory())
+                            .ssd(myComputer.getSsd())
+                            .hdd(myComputer.getHdd())
+                            .motherboard(myComputer.getMotherboard())
+                            .power(myComputer.getPower())
+                            .gpu(myComputer.getGpu())
+                            .coolerTuning(myComputer.getCoolerTuning())
+                            .pcCase(myComputer.getPcCase())
+                            .build();
+
+                    myComputerResponses.add(myComputerResponse);
+                }
+            }
+        }
+        return myComputerResponses;
+    }
+
+    @Override
+    public MyComputerResponse getMyComputerDto(String profileId, String computerId) {
+
+        Query query = new Query();
+        query.addCriteria(Criteria.where("profileId").is(profileId));
+
+        List<MyComputerDto> documents = mongoTemplate.find(query, MyComputerDto.class, "mycomputer");
+
+        if(documents.isEmpty()) throw new CustomException(CustomErrorCode.USER_NOT_FOUND);
+
+        for (MyComputerDto dto : documents) {
+            for (MyComputer myComputer : dto.getMyComputers()) {
+                if (!myComputer.getIsDeleted() && myComputer.getId().equals(computerId)) {
+                    return MyComputerResponse.builder()
+                            .computerName(myComputer.getComputerName())
+                            .cpu(myComputer.getCpu())
+                            .memory(myComputer.getMemory())
+                            .ssd(myComputer.getSsd())
+                            .hdd(myComputer.getHdd())
+                            .motherboard(myComputer.getMotherboard())
+                            .power(myComputer.getPower())
+                            .gpu(myComputer.getGpu())
+                            .coolerTuning(myComputer.getCoolerTuning())
+                            .pcCase(myComputer.getPcCase())
+                            .build();
+                }
+            }
+        }
+
+        throw new CustomException(CustomErrorCode.CUSTOM_PC_NOT_FOUND);
+    }
+
+    @Override
+    public void addMyComputer(MyComputerRequest myComputerRequest, String profileId){
+
+        logger.debug("개수: {}", countMyComputer(profileId));
+
+        if(countMyComputer(profileId)>=5)
+            throw new CustomException(CustomErrorCode.SIZE_FULL_ERROR);
+
+        MyComputer myComputer = MyComputer.builder()
+                .id(UUID.randomUUID().toString())
+                .computerName(myComputerRequest.getComputerName())
+                .cpu(myComputerRequest.getCpu())
+                .memory(myComputerRequest.getMemory())
+                .ssd(myComputerRequest.getSsd())
+                .hdd(myComputerRequest.getHdd())
+                .motherboard(myComputerRequest.getMotherboard())
+                .power(myComputerRequest.getPower())
+                .gpu(myComputerRequest.getGpu())
+                .coolerTuning(myComputerRequest.getCoolerTuning())
+                .pcCase(myComputerRequest.getPcCase())
+                .isDeleted(false)
+                .build();
+
+        Query query = new Query();
+        query.addCriteria(Criteria.where("profileId").is(profileId));
+
+        Update update = new Update();
+        update.push("myComputers", myComputer);
+
+        if(mongoTemplate.findOne(new Query().addCriteria(Criteria.where("profileId").is(profileId)), MyComputerDto.class)!=null){
+            mongoTemplate.updateFirst(query, update, "mycomputer");
+        } else {
+            logger.debug("새로운 도큐먼트 생성 -> ID: {}", profileId);
+            List<MyComputer> myComputerList = new ArrayList<>();
+            myComputerList.add(myComputer);
+            MyComputerDto myComputerDto = MyComputerDto.builder()
+                    .userId(profileId)
+                    .myComputers(myComputerList)
+                    .build();
+            mongoTemplate.save(myComputerDto, "mycomputer");
+        }
+    }
+
+    @Override
+    public void updateMyComputerDto(String profileId, MyComputerRequest myComputerRequest) {
+
+        String computerId = myComputerRequest.getId();
+
+        logger.debug("request 컴퓨터 아이디: {}", computerId);
+
+        // 여기서 내가 원하는 computer를 찾았어
+        Query query = new Query();
+        query.addCriteria(Criteria.where("profileId").is(profileId));
+        if(mongoTemplate.findOne(query, MyComputerDto.class)==null){
+            throw new CustomException(CustomErrorCode.USER_NOT_FOUND);
+        }
+
+        query.addCriteria(Criteria.where("myComputers._id").is(computerId));
+        if(mongoTemplate.findOne(query, MyComputerDto.class)==null){
+            throw new CustomException(CustomErrorCode.CUSTOM_PC_NOT_FOUND);
+        }
+
+        MyComputer myComputer = MyComputer.builder()
+                .id(myComputerRequest.getId())
+                .computerName(myComputerRequest.getComputerName())
+                .cpu(myComputerRequest.getCpu())
+                .memory(myComputerRequest.getMemory())
+                .ssd(myComputerRequest.getSsd())
+                .hdd(myComputerRequest.getHdd())
+                .motherboard(myComputerRequest.getMotherboard())
+                .power(myComputerRequest.getPower())
+                .gpu(myComputerRequest.getGpu())
+                .coolerTuning(myComputerRequest.getCoolerTuning())
+                .pcCase(myComputerRequest.getPcCase())
+                .build();
+
+        Update update = new Update();
+        update.set("myComputers.$", myComputer);
+
+        mongoTemplate.updateFirst(query, update, MyComputerDto.class);
+    }
+
+
+    @Override
+    public void deleteMyComputerDto(String profileId, String computerId){
+        MyComputerResponse myComputerDto = getMyComputerDto(profileId, computerId);
+
+        logger.debug("computerDto의 이름 : {}", myComputerDto.getComputerName());
+
+        Query query = new Query();
+
+        query.addCriteria(Criteria.where("profileId").is(profileId));
+        if(mongoTemplate.findOne(query, MyComputerDto.class)==null){
+            throw new CustomException(CustomErrorCode.USER_NOT_FOUND);
+        }
+
+        query.addCriteria(Criteria.where("myComputers._id").is(computerId));
+        if(mongoTemplate.findOne(query, MyComputerDto.class)==null){
+            throw new CustomException(CustomErrorCode.CUSTOM_PC_NOT_FOUND);
+        }
+
+        if(mongoTemplate.findOne(new Query()
+                .addCriteria(Criteria.where("profileId").is(profileId)
+                .and("myComputers._id").is(computerId)
+                .and("isDeleted").is(true)), MyComputerDto.class)!=null){
+            throw new CustomException(CustomErrorCode.CUSTOM_PC_NOT_FOUND);
+        }
+
+        Update update = new Update();
+        update.set("myComputers.$.isDeleted", true);
+
+        mongoTemplate.updateFirst(query, update, MyComputerDto.class);
+    }
+}
