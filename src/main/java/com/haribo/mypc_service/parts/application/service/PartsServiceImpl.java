@@ -26,7 +26,7 @@ public class PartsServiceImpl implements PartsService {
             case "case": return mongoTemplate.find(query, (Class<T>) CaseResponse.class, "parts");
             case "coolerTuning": return mongoTemplate.find(query, (Class<T>) CoolerResponse.class, "parts");
             case "hdd": return mongoTemplate.find(query, (Class<T>) HddResponse.class, "parts");
-            case "sdd": return mongoTemplate.find(query, (Class<T>) SsdResponse.class, "parts");
+            case "ssd": return mongoTemplate.find(query, (Class<T>) SsdResponse.class, "parts");
             case "power": return mongoTemplate.find(query, (Class<T>) PowerResponse.class, "parts");
             case "motherboard": return mongoTemplate.find(query, (Class<T>) MotherboardResponse.class, "parts");
             default: return mongoTemplate.find(query, (Class<T>) GpuResponse.class, "parts");
