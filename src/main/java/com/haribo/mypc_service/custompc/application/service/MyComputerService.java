@@ -7,10 +7,10 @@ import java.util.List;
 
 public interface MyComputerService {
 
-    int countMyComputer(String userId);
-    List<MyComputerResponse> getMyComputerList(String userId);
-    MyComputerResponse getMyComputerDto(String userId, String pcName);
-    void addMyComputer(MyComputerRequest myComputer, String userId);
-    void updateMyComputerDto(String userId, MyComputerRequest myComputer);
-    void deleteMyComputerDto(String userId, String computerId);
+    int countMyComputer(String profileId);
+    List<MyComputerResponse> getMyComputerList(String profileId);
+    MyComputerResponse getMyComputerDto(String profileId, String pcName);
+    void addMyComputer(MyComputerRequest myComputer, String profileId);
+    void updateMyComputerDto(String profileId, MyComputerRequest myComputer);
+    void deleteMyComputerDto(String profileId, String computerId);
 }

@@ -16,11 +16,11 @@ public class MakeMyComputerController {
     @Autowired
     private MyComputerService myComputerService;
 
-    @PostMapping("/{userId}")
+    @PostMapping("/{profileId}")
     @ResponseBody
-    private ResponseEntity<?> addMyComputer(@RequestBody MyComputerRequest myComputer, @PathVariable String userId){
+    private ResponseEntity<?> addMyComputer(@RequestBody MyComputerRequest myComputer, @PathVariable String profileId){
         try {
-            myComputerService.addMyComputer(myComputer, userId);
+            myComputerService.addMyComputer(myComputer, profileId);
         } catch (RuntimeException e) {
             // 5개 꽉 찬 경우에는 computer 못만들어요 에러
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
@@ -30,10 +30,10 @@ public class MakeMyComputerController {
 
     @GetMapping
     @ResponseBody
-    private ResponseEntity<?> findMyComputer(@RequestParam("userId") String userId){
+    private ResponseEntity<?> findMyComputer(@RequestParam("profileId") String profileId){
         List<MyComputerResponse> myComputerList = null;
         try {
-            myComputerList = myComputerService.getMyComputerList(userId);
+            myComputerList = myComputerService.getMyComputerList(profileId);
         } catch(RuntimeException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
@@ -41,10 +41,10 @@ public class MakeMyComputerController {
         return ResponseEntity.status(HttpStatus.OK).body(myComputerList);
     }
 
-    @PatchMapping("/{userId}")
-    private ResponseEntity<?> updateMyComputer(@PathVariable String userId, @RequestBody MyComputerRequest myComputer) {
+    @PatchMapping("/{profileId}")
+    private ResponseEntity<?> updateMyComputer(@PathVariable String profileId, @RequestBody MyComputerRequest myComputer) {
         try{
-            myComputerService.updateMyComputerDto(userId, myComputer);
+            myComputerService.updateMyComputerDto(profileId, myComputer);
         } catch(RuntimeException e){
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
@@ -52,10 +52,10 @@ public class MakeMyComputerController {
         return ResponseEntity.status(HttpStatus.OK).body("업데이트 완료!");
     }
 
-    @DeleteMapping("/{userId}/{computerId}")
-    private ResponseEntity<?> deleteMyComputer(@PathVariable String userId, @PathVariable String computerId) {
+    @DeleteMapping("/{profileId}/{computerId}")
+    private ResponseEntity<?> deleteMyComputer(@PathVariable String profileId, @PathVariable String computerId) {
         try{
-            myComputerService.deleteMyComputerDto(userId, computerId);
+            myComputerService.deleteMyComputerDto(profileId, computerId);
         } catch(RuntimeException e){
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
