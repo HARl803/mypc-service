@@ -1,24 +1,21 @@
 package com.haribo.mypc_service.parts.presentation.response;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @Document(collection = "parts")
 @Getter
-public class PowerResponse extends PartsResponse{
+public class PowerResponse extends PartsResponse {
 
-    private Map<String, Power> power;
-
-    public PowerResponse(Map<String, Power> power) {
-        this.power = power;
-    }
+    private Map<String, Power> power = new HashMap<>();
 
     @Getter
-    public static class Power{
+    public static class Power {
+
         @Field("제조회사")
         String manufacturer;
 
@@ -69,5 +66,6 @@ public class PowerResponse extends PartsResponse{
 
         @Field("이미지")
         String image;
+
     }
 }

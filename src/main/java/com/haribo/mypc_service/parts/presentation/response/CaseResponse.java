@@ -1,24 +1,22 @@
 package com.haribo.mypc_service.parts.presentation.response;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @Document(collection = "parts")
 @Getter
-public class CaseResponse extends PartsResponse{
-    @Field("case")
-    private Map<String, Case> pcCase;
+public class CaseResponse extends PartsResponse {
 
-    public CaseResponse(Map<String, Case> pcCase) {
-        this.pcCase = pcCase;
-    }
+    @Field("case")
+    private Map<String, Case> pcCase = new HashMap<>();;
 
     @Getter
-    public static class Case{
+    public static class Case {
+
         @Field("제조회사")
         String manufacturer;
 
@@ -117,5 +115,6 @@ public class CaseResponse extends PartsResponse{
 
         @Field("이미지")
         String image;
+
     }
 }

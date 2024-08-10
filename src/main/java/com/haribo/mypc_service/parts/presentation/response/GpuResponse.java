@@ -1,24 +1,21 @@
 package com.haribo.mypc_service.parts.presentation.response;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @Document(collection = "parts")
 @Getter
-public class GpuResponse extends PartsResponse{
-    @Field("gpu")
-    private Map<String, Gpu> gpu;
+public class GpuResponse extends PartsResponse {
 
-    public GpuResponse(Map<String, Gpu> gpu) {
-        this.gpu = gpu;
-    }
+    private Map<String, Gpu> gpu = new HashMap<>();;
 
     @Getter
-    public static class Gpu{
+    public static class Gpu {
+
         @Field("제조회사")
         String manufacturer;
 
@@ -105,5 +102,6 @@ public class GpuResponse extends PartsResponse{
 
         @Field("이미지")
         String image;
+
     }
 }

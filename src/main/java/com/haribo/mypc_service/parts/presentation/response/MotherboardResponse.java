@@ -1,24 +1,21 @@
 package com.haribo.mypc_service.parts.presentation.response;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @Document(collection = "parts")
 @Getter
-public class MotherboardResponse extends PartsResponse{
-    @Field("motherboard")
-    private Map<String, Motherboard> motherboard;
+public class MotherboardResponse extends PartsResponse {
 
-    public MotherboardResponse(Map<String, Motherboard> motherboard) {
-        this.motherboard = motherboard;
-    }
+    private Map<String, Motherboard> motherboard = new HashMap<>();
 
     @Getter
-    public static class Motherboard{
+    public static class Motherboard {
+
         @Field("제조회사")
         String manufacturer;
 
@@ -90,5 +87,6 @@ public class MotherboardResponse extends PartsResponse{
 
         @Field("이미지")
         String image;
+
     }
 }
