@@ -13,7 +13,7 @@ public class CustomExceptionHandler {
     public CustomErrorResponse handleCustomException(
             CustomException e,
             HttpServletRequest request) {
-        log.error(request.getRequestURI(), e.getStatusMessage());
+        log.error("에러 발생! 요청 URL: {}, 에러 메시지: {}", request.getRequestURL(), e.getStatusMessage());
         return CustomErrorResponse.builder()
                 .status(e.getCustomErrorCode())
                 .statusMessage(e.getStatusMessage())
