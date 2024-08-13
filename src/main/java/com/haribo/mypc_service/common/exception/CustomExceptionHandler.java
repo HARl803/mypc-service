@@ -15,6 +15,7 @@ public class CustomExceptionHandler {
     public ResponseEntity<?> handleCustomException(
             CustomException e,
             HttpServletRequest request) {
+
         log.error("에러!! 요청 URL: {}, 에러 메시지: {}", request.getRequestURI(), e.getStatusMessage());
         return new ResponseEntity<>(CustomErrorResponse.builder()
                 .status(e.getCustomErrorCode())
