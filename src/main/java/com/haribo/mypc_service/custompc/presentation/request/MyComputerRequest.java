@@ -1,5 +1,6 @@
 package com.haribo.mypc_service.custompc.presentation.request;
 
+import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.data.mongodb.core.mapping.Field;
@@ -7,8 +8,9 @@ import org.springframework.data.mongodb.core.mapping.Field;
 @Getter
 @AllArgsConstructor
 public class MyComputerRequest {
-    private String computerName;
+    @Id
     private String id;
+    private String computerName;
 
     private String cpu;
     private String coolerTuning;
