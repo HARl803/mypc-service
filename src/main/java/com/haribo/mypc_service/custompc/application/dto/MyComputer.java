@@ -1,16 +1,17 @@
-package com.haribo.mypc_service.custompc.presentation.request;
+package com.haribo.mypc_service.custompc.application.dto;
 
 import jakarta.persistence.Id;
-import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 @Getter
-@AllArgsConstructor
-public class MyComputerRequest {
+@Builder
+public class MyComputer {
     @Id
     private String id;
     private String computerName;
+    private Boolean isDeleted;
 
     private String cpu;
     private String coolerTuning;
