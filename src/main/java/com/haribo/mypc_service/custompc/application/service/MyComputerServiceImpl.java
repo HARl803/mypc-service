@@ -250,4 +250,27 @@ public class MyComputerServiceImpl implements MyComputerService {
 
         mongoTemplate.updateFirst(query, update, MyComputerDto.class);
     }
+
+    private Boolean checkProfile(String profileId) {
+
+        log.info("프로필 아이디 체크하기! : 아직 구현 안되어있어요... auth 어케 갔다와");
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.put(HttpHeaders.ACCEPT, Collections.singletonList(MediaType.APPLICATION_JSON_VALUE));
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+
+        URI authUrl = URI.create(AUTH_URL);
+
+        try {
+            ResponseEntity<?> map = restTemplate.exchange(authUrl, HttpMethod.GET, entity, LinkedHashMap.class);
+            log.debug("auth/profile 요청 시 오는 응답 BODY: {}", map.getBody());
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
+
+//        return map.getBody().get("profileId")==profileId;
+
+        log.debug("일단 무조건 성공으로 반환. checkProfile 메서드 수정 필요");
+        return true;
+    }
 }
