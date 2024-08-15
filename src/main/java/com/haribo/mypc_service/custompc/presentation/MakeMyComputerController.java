@@ -1,15 +1,14 @@
 package com.haribo.mypc_service.custompc.presentation;
 
+import com.haribo.mypc_service.common.auth.AuthService;
 import com.haribo.mypc_service.custompc.application.service.MyComputerService;
 import com.haribo.mypc_service.custompc.presentation.request.MyComputerRequest;
-import com.haribo.mypc_service.custompc.presentation.response.MyComputerResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.net.URISyntaxException;
 
 @RestController
 @RequestMapping("/api/v1/pc")
@@ -17,9 +16,13 @@ import java.util.List;
 public class MakeMyComputerController {
 
     private final MyComputerService myComputerService;
+    private final AuthService authService;
 
-    @PostMapping("/{profileId}")
-    private ResponseEntity<?> addMyComputer(@RequestBody MyComputerRequest myComputer, @PathVariable String profileId){
+    @PostMapping
+    private ResponseEntity<?> addMyComputer(@RequestBody MyComputerRequest myComputer,
+                                            @CookieValue("JSESSIONID") String sessionId) throws URISyntaxException {
+
+        String profileId = authService.authorizedProfileId(sessionId);
 
         myComputerService.addMyComputer(myComputer, profileId);
 
@@ -27,26 +30,32 @@ public class MakeMyComputerController {
     }
 
     @GetMapping
-    private ResponseEntity<?> findMyComputer(@RequestParam("profileId") String profileId){
+    private ResponseEntity<?> findMyComputer(@CookieValue("JSESSIONID") String sessionId) throws URISyntaxException {
 
-        List<MyComputerResponse> myComputerList = myComputerService.getMyComputerList(profileId);
+        String profileId = authService.authorizedProfileId(sessionId);
 
-        return ResponseEntity.status(HttpStatus.OK).body(myComputerList);
+        return ResponseEntity.status(HttpStatus.OK).body(myComputerService.getMyComputerList(profileId));
     }
 
-    @PatchMapping("/{profileId}")
-    private ResponseEntity<?> updateMyComputer(@PathVariable String profileId, @RequestBody MyComputerRequest myComputer) {
+    @PatchMapping
+    private ResponseEntity<?> updateMyComputer(@RequestBody MyComputerRequest myComputer,
+                                               @CookieValue("JSESSIONID") String sessionId) throws URISyntaxException {
+
+        String profileId = authService.authorizedProfileId(sessionId);
 
         myComputerService.updateMyComputerDto(profileId, myComputer);
 
-        return ResponseEntity.status(HttpStatus.OK).body("업데이트 완료!");
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
-    @DeleteMapping("/{profileId}/{computerId}")
-    private ResponseEntity<?> deleteMyComputer(@PathVariable String profileId, @PathVariable String computerId) {
+    @DeleteMapping("/{computerId}")
+    private ResponseEntity<?> deleteMyComputer(@PathVariable String computerId,
+                                               @CookieValue("JSESSIONID") String sessionId) throws URISyntaxException {
+
+        String profileId = authService.authorizedProfileId(sessionId);
 
         myComputerService.deleteMyComputerDto(profileId, computerId);
 
-        return ResponseEntity.status(HttpStatus.OK).body("삭제 완료!");
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }
