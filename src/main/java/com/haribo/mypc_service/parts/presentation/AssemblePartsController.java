@@ -19,11 +19,19 @@ public class AssemblePartsController {
     private final PartsService partsService;
 
     @GetMapping
-    private ResponseEntity<? extends PartsResponse> findParts(@RequestParam String partsName) {
+    private ResponseEntity<? extends PartsResponse> findAllParts(@RequestParam String partsName) {
         log.info("{} 부품 리스트 요청", partsName);
 
-        return new ResponseEntity<>(partsService.getAllParts(partsName, getPartType(partsName)), HttpStatus.OK);
+        return ResponseEntity.status(HttpStatus.OK).body(partsService.getAllParts(partsName, getPartType(partsName)));
     }
+
+    @GetMapping("/all")
+    private ResponseEntity<?> findParts() {
+        log.info("부품 전체 요청!");
+
+        return ResponseEntity.status(HttpStatus.OK).body(partsService.getParts());
+    }
+
 
     private Class<? extends PartsResponse> getPartType(String partsName) {
         return switch (partsName) {
