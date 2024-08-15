@@ -9,16 +9,12 @@ import com.haribo.mypc_service.custompc.presentation.response.MyComputerResponse
 import com.mongodb.client.result.UpdateResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
-import org.springframework.http.*;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
-import java.net.URI;
 import java.util.*;
 
 
@@ -185,10 +181,7 @@ public class MyComputerServiceImpl implements MyComputerService {
 
         MyComputerDto myComputerDto = mongoTemplate.findOne(query, MyComputerDto.class, "mycomputer");
 
-        log.info("찾은 도큐먼트 일치하는지 확인: {}, {}",
-                mongoTemplate.findOne(new Query().addCriteria(Criteria.where("profileId").is(profileId)), MyComputerDto.class, "mycomputer"),
-                mongoTemplate.findOne(query, MyComputerDto.class, "mycomputer").getProfileId()
-        );
+        log.info("profileId: {}", mongoTemplate.findOne(query, MyComputerDto.class, "mycomputer").getProfileId());
 
         if(mongoTemplate.findOne(query, MyComputerDto.class)==null){
             throw new CustomException(CustomErrorCode.CUSTOM_PC_NOT_FOUND);
@@ -215,14 +208,14 @@ public class MyComputerServiceImpl implements MyComputerService {
             update.set("myComputers.$", myComputer);
 
             mongoTemplate.updateFirst(query, update, MyComputerDto.class);
-        }
+        } else throw new CustomException(CustomErrorCode.CAN_NOT_UPDATED);
     }
 
 
     @Override
     public void deleteMyComputerDto(String profileId, String computerId) {
 
-        log.debug("해당 컴퓨터 삭제하기!");
+        log.info("해당 컴퓨터 삭제하기!");
 
         Query query = new Query();
         query.addCriteria(Criteria.where("myComputers._id").is(computerId));
@@ -246,6 +239,6 @@ public class MyComputerServiceImpl implements MyComputerService {
             update.set("myComputers.$.isDeleted", true);
 
             mongoTemplate.updateFirst(query, update, MyComputerDto.class);
-        }
+        } else throw new CustomException(CustomErrorCode.CAN_NOT_DELETED);
     }
 }
