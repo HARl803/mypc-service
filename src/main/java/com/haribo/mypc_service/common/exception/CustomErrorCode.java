@@ -19,6 +19,13 @@ public enum CustomErrorCode {
 
     // 올바르지 않은 부품 요청
     PART_NOT_FOUND("유효하지 않은 부품 이름입니다.", HttpStatus.BAD_REQUEST),
+
+    // 작성자와 수정자 불일치
+    CAN_NOT_UPDATED("작성자와 수정자가 일치하지 않아 수정이 불가합니다.", HttpStatus.BAD_REQUEST),
+
+
+    CAN_NOT_DELETED("작성자와 수정자가 일치하지 않아 삭제가 불가합니다.", HttpStatus.BAD_REQUEST),
+
     ;
 
     private final String statusMessage;
